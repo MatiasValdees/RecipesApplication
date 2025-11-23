@@ -19,7 +19,8 @@ public class UserController {
 
     private final UsersService userService;
     private final RoleService roleService;
-
+    private final String VIEW_USER_FORM ="users/form";
+    private final String REDIRECT_USERS ="redirect:/users";
 
     @GetMapping
     public String listUsers(Model model) {
@@ -32,7 +33,7 @@ public class UserController {
     public String createUser(Model model) {
         model.addAttribute("user", new UsersRequest());
         model.addAttribute("roles", roleService.getAllRoles());
-        return "users/form";
+        return VIEW_USER_FORM;
     }
 
 
@@ -45,14 +46,14 @@ public class UserController {
         if (result.hasErrors()) {
             log.warn("Validation errors: {}", result.getAllErrors());
             model.addAttribute("roles", roleService.getAllRoles());
-            return "users/form";
+            return VIEW_USER_FORM;
         }
 
         log.info("Saving user with username: {}", userRequest.getUsername());
         userService.createUsers(userRequest);
         log.info("User saved successfully. Redirecting to /users");
 
-        return "redirect:/users";
+        return REDIRECT_USERS;
     }
 
 
@@ -63,7 +64,7 @@ public class UserController {
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
         model.addAttribute("user", user);
         model.addAttribute("roles", roleService.getAllRoles());
-        return "users/form";
+        return VIEW_USER_FORM;
     }
 
     @GetMapping("/delete/{id}")
@@ -71,7 +72,7 @@ public class UserController {
         log.info("Deleting user with ID: {}", id);
         userService.deleteUsersById(id);
         log.info("User deleted successfully.");
-        return "redirect:/users";
+        return REDIRECT_USERS;
     }
 }
 

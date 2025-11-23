@@ -22,7 +22,7 @@ public class RecipeController {
 
     private final IIngredientService ingredientService;
     private final IRecipeService recipeService;
-
+    private final String VIEW_RECIPE_FORM ="recipes/form";
     @GetMapping
     public String listRecipes(Model model) {
         model.addAttribute("recipes", recipeService.findAll());
@@ -34,7 +34,7 @@ public class RecipeController {
         model.addAttribute("ingredients", ingredientService.findAll());
         model.addAttribute("countries", List.of("Argentina", "Chile", "México", "España", "Perú"));
         model.addAttribute("recipeTypes", List.of("Postre", "Entrada", "Plato Principal", "Bebida"));
-        return "recipes/form";
+        return VIEW_RECIPE_FORM;
     }
 
     @PostMapping("/save")
@@ -47,7 +47,7 @@ public class RecipeController {
         if (result.hasErrors()) {
             log.warn("Errores de validación: {}", result.getAllErrors());
             model.addAttribute("ingredients", ingredientService.findAll());
-            return "recipes/form";
+            return VIEW_RECIPE_FORM;
         }
 
         log.info("Datos válidos, guardando receta");
@@ -70,7 +70,7 @@ public class RecipeController {
         model.addAttribute("countries", List.of("Argentina", "Chile", "México", "España", "Perú"));
         model.addAttribute("recipeTypes", List.of("Postre", "Entrada", "Plato Principal", "Bebida"));
 
-        return "recipes/form";
+        return VIEW_RECIPE_FORM;
     }
 
     @PostMapping("/delete/{id}")

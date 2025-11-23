@@ -16,7 +16,7 @@ import org.springframework.ui.Model;
 public class IngredientController {
 
     private final IIngredientService ingredientService;
-
+    private final String VIEW_INGREDIENT_FORM="ingredients/form";
     @GetMapping
     public String listIngredients(Model model) {
         model.addAttribute("ingredients", ingredientService.findAll());
@@ -26,7 +26,7 @@ public class IngredientController {
     @GetMapping("/create")
     public String createIngredient(Model model) {
         model.addAttribute("ingredient", new IngredientEntity());
-        return "ingredients/form";
+        return VIEW_INGREDIENT_FORM;
     }
 
     @PostMapping("/save")
@@ -35,7 +35,7 @@ public class IngredientController {
                                  Model model) {
 
         if (result.hasErrors()) {
-            return "ingredients/form";
+            return VIEW_INGREDIENT_FORM;
         }
 
         ingredientService.create(ingredient);
@@ -45,7 +45,7 @@ public class IngredientController {
     @GetMapping("/edit/{id}")
     public String editIngredient(@PathVariable Integer id, Model model) {
         model.addAttribute("ingredient", ingredientService.findById(id));
-        return "ingredients/form";
+        return VIEW_INGREDIENT_FORM;
     }
 
     @GetMapping("/delete/{id}")
